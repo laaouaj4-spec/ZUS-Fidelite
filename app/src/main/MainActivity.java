@@ -17,14 +17,12 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // الصفحة الرئيسية
         LinearLayout mainLayout = new LinearLayout(this);
         mainLayout.setOrientation(LinearLayout.VERTICAL);
         mainLayout.setGravity(Gravity.CENTER);
         mainLayout.setPadding(40, 40, 40, 40);
         mainLayout.setBackgroundColor(Color.WHITE);
 
-        // عنوان التطبيق
         TextView title = new TextView(this);
         title.setText("ZUS Fidélité");
         title.setTextSize(30);
@@ -32,11 +30,45 @@ public class MainActivity extends Activity {
         title.setTypeface(null, Typeface.BOLD);
         title.setGravity(Gravity.CENTER);
 
-        // وصف
         TextView description = new TextView(this);
         description.setText(
-                "Bienvenue dans votre carte de fidélité numérique\n\n" +
-                "Scannez votre QR Code ou utilisez NFC."
+                "Bienvenue dans votre carte de fidélité numérique\n\n"
+                + "Scannez votre QR Code ou utilisez NFC."
         );
         description.setTextSize(18);
-        description.setText
+        description.setTextColor(Color.DKGRAY);
+        description.setGravity(Gravity.CENTER);
+        description.setPadding(0, 30, 0, 40);
+
+        Button qrButton = new Button(this);
+        qrButton.setText("Scanner QR Code");
+        qrButton.setTextSize(18);
+
+        qrButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(
+                        MainActivity.this,
+                        "Scanner QR Code",
+                        Toast.LENGTH_SHORT
+                ).show();
+            }
+        });
+
+        Button nfcButton = new Button(this);
+        nfcButton.setText("Utiliser NFC");
+        nfcButton.setTextSize(18);
+
+        nfcButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(
+                        MainActivity.this,
+                        "Fonction NFC",
+                        Toast.LENGTH_SHORT
+                ).show();
+            }
+        });
+
+        Button cardButton = new Button(this);
+        cardButton.setText("Ma

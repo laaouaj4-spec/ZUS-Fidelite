@@ -60,4 +60,4 @@ public class MainActivity extends Activity {
         mainLayout.addView(button);
 
         // Afficher le layout
-        set
+        setContentView(mainLayout);

@@ -4,60 +4,46 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.graphics.Color;
 import android.view.Gravity;
-import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MainActivity extends Activity {
+
+    private String clientId = "ZUS-FIDELITE-4587";
+    private int points = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Création du layout principal
-        LinearLayout mainLayout = new LinearLayout(this);
-        mainLayout.setOrientation(LinearLayout.VERTICAL);
-        mainLayout.setGravity(Gravity.CENTER);
-        mainLayout.setPadding(40, 40, 40, 40);
-        mainLayout.setBackgroundColor(Color.WHITE);
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setGravity(Gravity.CENTER);
+        layout.setPadding(30, 30, 30, 30);
+        layout.setBackgroundColor(Color.WHITE);
 
-        // Titre
         TextView title = new TextView(this);
-        title.setText("ZUS Fidelity");
+        title.setText("ZUS Fidélité");
         title.setTextSize(30);
-        title.setTextColor(Color.BLACK);
+        title.setTextColor(Color.rgb(130, 90, 180));
         title.setGravity(Gravity.CENTER);
-        title.setPadding(0, 0, 0, 30);
 
-        // Description
-        TextView description = new TextView(this);
-        description.setText("Bienvenue dans l'application ZUS Fidelity");
-        description.setTextSize(18);
-        description.setTextColor(Color.DKGRAY);
-        description.setGravity(Gravity.CENTER);
-        description.setPadding(0, 0, 0, 40);
+        TextView client = new TextView(this);
+        client.setText("Client : " + clientId);
+        client.setTextSize(22);
+        client.setGravity(Gravity.CENTER);
+        client.setPadding(0, 40, 0, 20);
 
-        // Bouton
-        Button button = new Button(this);
-        button.setText("Commencer");
+        TextView pointsText = new TextView(this);
+        pointsText.setText("Points : " + points);
+        pointsText.setTextSize(24);
+        pointsText.setGravity(Gravity.CENTER);
+        pointsText.setTextColor(Color.rgb(100, 70, 150));
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(
-                        MainActivity.this,
-                        "Bienvenue dans ZUS Fidelity",
-                        Toast.LENGTH_SHORT
-                ).show();
-            }
-        });
+        layout.addView(title);
+        layout.addView(client);
+        layout.addView(pointsText);
 
-        // Ajouter les éléments au layout
-        mainLayout.addView(title);
-        mainLayout.addView(description);
-        mainLayout.addView(button);
-
-        // Afficher le layout
-        setContentView(mainLayout);
+        setContentView(layout);
+    }
+}

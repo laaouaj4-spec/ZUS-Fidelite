@@ -1,39 +1,62 @@
+
 name: Build ZUS Fidelite APK
 
 on:
   workflow_dispatch:
   push:
-    branches: [ main, master ]
+    branches:
+      - main
 
 permissions:
   contents: read
 
 jobs:
   build:
+    name: Build ZUS Fidelite APK
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout source
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up JDK 17
+      - name: Set up Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
 
-      - name: Install Gradle
-        uses: gradle/actions/setup-gradle@v4
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
 
-      - name: Verify Android SDK
+      - name: Check project files
         run: |
-          echo "ANDROID_HOME=$ANDROID_HOME"
-          ls "$ANDROID_HOME/platforms"
-          ls "$ANDROID_HOME/build-tools"
+          echo "Current directory:"
+          pwd
+          echo "Project files:"
+          ls -la
+          echo "Gradle files:"
+          find . -maxdepth 3 \( -name "settings.gradle" -o -name "settings.gradle.kts" -o -name "gradlew" -o -name "build.gradle" -o -name "build.gradle.kts" -o -name "gradle.properties" \) -print
+
+      - name: Enable AndroidX
+        run: |
+          if [ -f gradle.properties ]; then
+            grep -qxF 'android.useAndroidX=true' gradle.properties || echo 'android.useAndroidX=true' >> gradle.properties
+            grep -qxF 'android.enableJetifier=true' gradle.properties || echo 'android.enableJetifier=true' >> gradle.properties
+          else
+            printf '%s\n' 'android.useAndroidX=true' 'android.enableJetifier=true' > gradle.properties
+          fi
 
       - name: Build debug APK
-        run:  run: gradle -Pandroid.useAndroidX=true -Pandroid.enableJetifier=true assembleDebugstacktrace
+        run: |
+          if [ -f gradlew ]; then
+            chmod +x gradlew
+            ./gradlew --no-daemon assembleDebug
+          else
+            gradle --no-daemon assembleDebug
+          fi
 
       - name: Upload APK
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: ZUS-Fidelite-APK

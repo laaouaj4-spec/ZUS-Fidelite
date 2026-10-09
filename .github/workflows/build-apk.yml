@@ -28,14 +28,20 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Check project files
+      - name: Inspect project
         run: |
           echo "Current directory:"
           pwd
-          echo "Project files:"
+          echo "Root files:"
           ls -la
           echo "Gradle files:"
           find . -maxdepth 3 \( -name "settings.gradle" -o -name "settings.gradle.kts" -o -name "gradlew" -o -name "build.gradle" -o -name "build.gradle.kts" -o -name "gradle.properties" \) -print
+          echo "AndroidX properties:"
+          if [ -f gradle.properties ]; then
+            cat gradle.properties
+          else
+            echo "gradle.properties is missing from project root"
+          fi
 
       - name: Enable AndroidX
         run: |
@@ -45,14 +51,18 @@ jobs:
           else
             printf '%s\n' 'android.useAndroidX=true' 'android.enableJetifier=true' > gradle.properties
           fi
+          echo "Updated Gradle properties:"
+          cat gradle.properties
 
       - name: Build debug APK
+        env:
+          ANDROID_USE_ANDROIDX: "true"
         run: |
           if [ -f gradlew ]; then
             chmod +x gradlew
-            ./gradlew --no-daemon assembleDebug
+            ./gradlew --no-daemon -Pandroid.useAndroidX=true assembleDebug
           else
-            gradle --no-daemon assembleDebug
+            gradle --no-daemon -Pandroid.useAndroidX=true assembleDebug
           fi
 
       - name: Upload APK
@@ -62,3 +72,4 @@ jobs:
           name: ZUS-Fidelite-APK
           path: app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
+

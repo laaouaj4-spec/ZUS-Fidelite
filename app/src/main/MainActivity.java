@@ -1,13 +1,13 @@
-Package com.example.zusfidelity;
+package com.example.zusfidelity;
 
-import android.app.Activity;
-import android.os.Bundle;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import androidx.appcompat.app.AppCompatActivity;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
     private String clientId = "ZUS-FIDELITE-4587";
     private int points = 0;
